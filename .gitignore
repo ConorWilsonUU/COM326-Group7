@@ -1,0 +1,15 @@
+# Visual Studio cache and temp files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+
+# Other auto-generated files
+*.db
+*.db-shm
+*.db-wal
