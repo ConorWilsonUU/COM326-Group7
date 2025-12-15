@@ -93,7 +93,7 @@ public class QuizSystem
         string newDifficulty = Console.ReadLine();
 
         // Call the Question class update method
-        q.Update(newText, newOptions, newAnswer, newDifficulty);
+        q.Update(newText, newOptions, newAnswer, newDifficulty); 
 
         Console.WriteLine("Question updated successfully.");
     }
