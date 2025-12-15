@@ -87,5 +87,16 @@ public class Admin : User
         {
             Console.WriteLine("User not found.");
         }
+          private void SaveUsersToCsv()
+  {
+      List<string> lines = new List<string>();
+
+      foreach (User user in users)
+      {
+          lines.Add($"{user.Username},{user.Password}");
+      }
+
+      File.WriteAllLines(filePath, lines);
+  }
     }
 
