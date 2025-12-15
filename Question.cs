@@ -1,5 +1,13 @@
 ﻿using System;
 
+
+//=======================
+// Add new questions
+// Remove questions
+// Show all Questions
+//=======================
+
+
 public class Question
 {
     private int questionID;
@@ -49,7 +57,7 @@ public class Question
 			int id = Convert.ToInt32(input);
 
 			Question found = null;
-			foreach (Question q in QuestionList)
+			foreach (Question q in QuestionLists)
 			{
                 if (q.QuestionID == id)
 				{
