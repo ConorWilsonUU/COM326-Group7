@@ -1,101 +1,46 @@
 ﻿using System;
 
 public class Question
-{ 
-
-
-//public Question()
-//*****************************************************
-// NEED TO DO
-//*****************************************************
-// Save questions into the list  <----!!! DONE
-// Edit Question <----
-// Show correct answer for chosen question <---- DONE
-
-
-
-	private int questionID;
+{
+    private int questionID;
 	private string questionText;
 	private string questionCorrectAnswer;
 	private string questionDifficulty;
 	private string questionOptions;
 
-	private static List<Question> QuestionList = new List<Question>();
-	static string destinationFilePath;
+    private static List<Question> QuestionLists = new List<Question>();
 
-	public static void Main()
-	{
-		string folder = "Data";
-		string filename = "Question.csv";
+    public static List<Question> GetAllQuestions()
+    {
+               return QuestionLists;
+    }
 
-		destinationFilePath = CopyDataToWorkingDir(folder, filename);
-		LoadQuestionsOptions(destinationFilePath);
-		MainMenu();
-	}
+    public static void LoadQuestion(string destinationFilePath)
+    {
+        using (var reader = new StreamReader(destinationFilePath))
+        {
+            // Skip the heqader line
+            reader.ReadLine();
+            while (!reader.EndOfStream)
+            {
+                var line = reader.ReadLine();
+                var values = line.Split(',');
 
-	public static string CopyDataToWorkingDir(string folder, string filename)
-	{
-		string projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Fullname;
-		string sourceFilePath = Path.Combine(projectDirectory,folder, filename);
-		string destinationFilePath = Path.Combine(Environment.CurrentDirectory,filename);
+                // Read each value into the relevant variable
+                int QuestionID = int.Parse(values[0]);
+                string QuestionText = values[1];
+                string QuestionOptions = values[2];
+                string CorrectAnswer = values[3];
+                string DifficultyLevel = values[4];
 
-		if (File.Exists(sourceFilePath))
-		{
-			File.Copy(sourceFilePath, destinationFilePath, true);
-		}
-		else
-		{
-			Console.WriteLine("Source file not found: " + sourceFilePath);
-		}
-		return destinationFilePath;
-	}
-
-	public static void LoadQuestionOptions(string destinationFilePath)
-	{
-		using (var reader = new StreamReader(destinationFilePath))
-		{
-			reader.ReadLine();
-			while(!reader.EndOfStream)
-			{
-				var line = reader.ReadLine();
-				var values = line.Split(',');
-				int QuestionId = int.Parse(values[0]);
-				string QuestionTxt = values[1];
-				string Options = values[2];
-				string CorrectAnswer = values[3];
-				string DifficultyLevel = values[4];
-
-                Question q = new Question(QuestionId, QuestionTxt, CorrectAnswer, DifficultyLevel, Options);
-                QuestionList.Add(q);
+                // Create a question
+                Question q = new Question(QuestionID, QuestionText, CorrectAnswer, DifficultyLevel, QuestionOptions);
+                QuestionLists.Add(q);
             }
-		}
-	}
-
-	public static void MainMenu()
-	{
-		while (true)
-		{
-			Console.WriteLine("Pick An Option:");
-            Console.WriteLine("1: Edit Question");
-            Console.WriteLine("2: Show Answer");
-            int choice = Convert.To.Int32(Console.ReadLine());
-
-			if (choice == 1)
-			{
-				EditQuestion();
-			}
-			else if(choice == 2)
-			{
-				Answer();
-			}
-			else
-			{
-				Console.WriteLine("Please try again");
-			}
         }
-	}
+    }
 
-	public static void Answer()
+    public static void Answer()
 	{
 		Console.WriteLine("Enter QuestionID: ");
 		string input = Console.ReadLine();
@@ -128,12 +73,15 @@ public class Question
 		}
 	}
 
-	public static void EditQuestion()
-	{
-		//do this next time
-	}
+    public void Update(string newText, string newOptions, string newAnswer, string newDifficulty)
+    {
+        QuestionText = newText;
+        QuestionOptions = newOptions;
+        QuestionCorrectAnswer = newAnswer;
+        QuestionDifficulty = newDifficulty;
+    }
 
-	public int QuestionID
+    public int QuestionID
 	{
 		get { return questionID; }
 		set { questionID = value; }
@@ -163,7 +111,6 @@ public class Question
 		set { questionOptions = value; } 
 	}
 
-
     // Constructor
     public Question(int questionID, string questionText, string questionCorrectAnswer, string questionDifficulty, string questionOptions)
 	{
@@ -173,4 +120,5 @@ public class Question
 		this.questionDifficulty = questionDifficulty;
         this.questionOptions = questionOptions;
     }
+
 }
