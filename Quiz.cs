@@ -3,32 +3,33 @@
 public class Quiz
 {
 	private List<Question> quizQuestions;
-	private int QuizID;
-	private string QuizTitle;
-	private string QuizDescription;
-	private DateTime QuizDate;
+	private int quizID;
+	private string quizTitle;
+	private string quizDescription;
+	private DateTime quizDate;
 
 	public int QuizID
 	{
-		get { return QuizID; }
-		set { QuizID = value; }
+		get { return quizID; }
+		set { quizID = value; }
 	}
 	public string QuizTitle
 	{
-		get { return QuizTitle; }
-		set { QuizTitle = value; }
+		get { return quizTitle; }
+		set { quizTitle = value; }
 	}
 	public string QuizDescription
 	{
-		get { return QuizDescription; }
-		set { QuizDescription = value; }
+		get { return quizDescription; }
+		set { quizDescription = value; }
 	}
 	public DateTime QuizDate
 	{
-		get { return QuizDate; }
-		set { QuizDate = value; }
+		get { return quizDate; }
+		set { quizDate = value; }
 	}
 
+	// Loads all questions
 	public Quiz()
 	{
 		quizQuestions = Question.GetAllQuestions();
