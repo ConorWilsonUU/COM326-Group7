@@ -1,21 +1,17 @@
 ﻿using System;
-
-
-//=======================
-// Add new questions
-// Remove questions
-// Show all Questions
-//=======================
-
+using System.IO;
 
 public class Question
 {
+    // Private fields store question data
     private int questionID;
 	private string questionText;
 	private string questionCorrectAnswer;
 	private string questionDifficulty;
 	private string questionOptions;
 
+    // Static list holding all questions from CSV file
+    // Shared accross the application
     private static List<Question> QuestionLists = new List<Question>();
 
     public static List<Question> GetAllQuestions()
@@ -23,6 +19,8 @@ public class Question
                return QuestionLists;
     }
 
+    // Loads questions from the CSV file into the static list
+    // Called once at application startup
     public static void LoadQuestion(string destinationFilePath)
     {
         using (var reader = new StreamReader(destinationFilePath))
@@ -41,46 +39,42 @@ public class Question
                 string CorrectAnswer = values[3];
                 string DifficultyLevel = values[4];
 
-                // Create a question
-                Question q = new Question(QuestionID, QuestionText, CorrectAnswer, DifficultyLevel, QuestionOptions);
+                // Create a question and add it to the list
+                Question q = new Question(QuestionID, QuestionText, QuestionOptions, CorrectAnswer, DifficultyLevel);
                 QuestionLists.Add(q);
             }
         }
     }
 
-    public static void Answer()
-	{
-		Console.WriteLine("Enter QuestionID: ");
-		string input = Console.ReadLine();
-		try
-		{
-			int id = Convert.ToInt32(input);
+    // Used when adding a new question
+    public static void SaveQuestionToCSV(string filePath, Question q)
 
-			Question found = null;
-			foreach (Question q in QuestionLists)
-			{
-                if (q.QuestionID == id)
-				{
-					found = q;
-					break;
-				}
-			}
-			if (found != null)
-			{
-                Console.WriteLine($"Question: {found.QuestionText}");
-                Console.WriteLine($"Correct Answer: {found.QuestionCorrectAnswer}");
-            } 
-            else
+    {
+        using (var writer = new StreamWriter(filePath, true))
+        {
+            writer.WriteLine($"{q.QuestionID},{q.QuestionText},{q.QuestionOptions},{q.QuestionCorrectAnswer},{q.QuestionDifficulty}");
+        }
+    }
+
+    // Rewrites the entire CSV file with the updated list of questions
+    // Used after editing or removing a question
+    public static void SaveAllQuestionsToCSV(string filePath)
+    {
+        using (var writer = new StreamWriter(filePath, false))
+        {
+            // Write header
+            writer.WriteLine("QuestionID,QuestionText,QuestionOptions,CorrectAnswer,QuestionDifficulty");
+
+            // Write each question to the file
+            foreach (Question q in QuestionLists)
             {
-                Console.WriteLine("Question not found.");
+                writer.WriteLine($"{q.QuestionID},{q.QuestionText},{q.QuestionOptions},{q.QuestionCorrectAnswer},{q.QuestionDifficulty}");
             }
         }
-        catch (FormatException)
-		{
-			Console.WriteLine("Invalid ID. Please try again");
-		}
-	}
+    }
 
+    // Updates the fields of the question
+    // Called when editing a question
     public void Update(string newText, string newOptions, string newAnswer, string newDifficulty)
     {
         QuestionText = newText;
@@ -89,6 +83,7 @@ public class Question
         QuestionDifficulty = newDifficulty;
     }
 
+    // Public properties for accessing question data
     public int QuestionID
 	{
 		get { return questionID; }
@@ -120,7 +115,7 @@ public class Question
 	}
 
     // Constructor
-    public Question(int questionID, string questionText, string questionCorrectAnswer, string questionDifficulty, string questionOptions)
+    public Question(int questionID, string questionText, string questionOptions, string questionCorrectAnswer, string questionDifficulty)
 	{
 		this.questionID = questionID;
 		this.questionText = questionText;
