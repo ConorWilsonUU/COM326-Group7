@@ -55,5 +55,22 @@ public class User
 		{		
 			Console.WriteLine("User profile updated.");
 		}
+		private void LoadUsersFromCsv()
+{
+    if (!File.Exists(filePath))
+        return;
+
+    string[] lines = File.ReadAllLines(filePath);
+
+    foreach (string line in lines)
+    {
+        string[] data = line.Split(',');
+
+        if (data.Length == 2)
+        {
+            users.Add(new User(data[0], data[1]));
+        }
+    }
+}
 	}
 }
