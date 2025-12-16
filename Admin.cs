@@ -5,7 +5,7 @@ public class Admin : User
 {
     private DateTime loginDate;
     private List<User> users = new List<User>();
-   
+
 
     public DateTime LoginDate
     {
@@ -17,7 +17,7 @@ public class Admin : User
         get { return users; }
         set { users = value; }
     }
-    
+
 
 
     public Admin(string username, string password, DateTime loginDate, string role)
@@ -65,7 +65,7 @@ public class Admin : User
         string username = Console.ReadLine();
 
         User user = users.Find(u => u.Username == username);
-            
+
         if (user != null)
         {
             Console.Write("Enter new password: ");
@@ -87,16 +87,16 @@ public class Admin : User
         {
             Console.WriteLine("User not found.");
         }
-          private void SaveUsersToCsv()
-  {
-      List<string> lines = new List<string>();
+        private void SaveUsersToCsv()
+    {
+        List<string> lines = new List<string>();
 
-      foreach (User user in users)
-      {
-          lines.Add($"{user.Username},{user.Password}");
-      }
+        foreach (User user in users)
+        {
+            lines.Add($"{user.Username},{user.Password}");
+        }
 
-      File.WriteAllLines(filePath, lines);
-  }
+        File.WriteAllLines(filePath, lines);
     }
+}
 

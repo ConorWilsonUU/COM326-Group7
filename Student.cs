@@ -1,19 +1,17 @@
 ﻿using System;
 
-public class Student: User
+public class Student : User
 {
-	public Student()
+	private string status;
+	public string Status
 	{
-		private string status;
-		public string Status
-		{
-				get { return status; }
-				set { status = value; }
-		}
+		get { return status; }
+		set { status = value; }
+	}
 	// Constructor
-	public Student(string username, string password, string status): base(username, password)
-		{
-			this.status = status;
-    }
+	public Student(string username, string password, string status) : base(username, password)
+	{
+		this.status = status;
+	}
 }
-}
+
